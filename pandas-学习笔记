@@ -1,1 +1,844 @@
 
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+##  使用[], loc ,iloc 选择数据 
+
+### 先看看 DataFrame 组成有哪些 ，如下：
+
+
+```python
+df=pd.read_csv('data/sample_data.csv',index_col=0)
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>NY</td>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>30</td>
+      <td>165</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>black</td>
+      <td>Melon</td>
+      <td>33</td>
+      <td>172</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>TX</td>
+      <td>red</td>
+      <td>Beans</td>
+      <td>69</td>
+      <td>150</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+index = df.index
+columns = df.columns
+values = df.values
+index
+```
+
+
+
+
+    Index(['Jane', 'Niko', 'Aaron', 'Penelope', 'Dean', 'Christina', 'Cornelia'], dtype='object')
+
+
+
+
+```python
+columns
+```
+
+
+
+
+    Index(['state', 'color', 'food', 'age', 'height', 'score'], dtype='object')
+
+
+
+
+```python
+values
+```
+
+
+
+
+    array([['NY', 'blue', 'Steak', 30, 165, 4.6],
+           ['TX', 'green', 'Lamb', 2, 70, 8.3],
+           ['FL', 'red', 'Mango', 12, 120, 9.0],
+           ['AL', 'white', 'Apple', 4, 80, 3.3],
+           ['AK', 'gray', 'Cheese', 32, 180, 1.8],
+           ['TX', 'black', 'Melon', 33, 172, 9.5],
+           ['TX', 'red', 'Beans', 69, 150, 2.2]], dtype=object)
+
+
+
+
+```python
+type(index)
+```
+
+
+
+
+    pandas.core.indexes.base.Index
+
+
+
+
+```python
+type(columns)
+```
+
+
+
+
+    pandas.core.indexes.base.Index
+
+
+
+
+```python
+type(values)
+```
+
+
+
+
+    numpy.ndarray
+
+
+
+**DataFrame 有index -行索引，columns-列索引，values-数据（数组）组成。pandas 基于numpy库**
+
+### 从DataFrame 每个列都是以Series 类型返回
+
+
+```python
+df['food']
+```
+
+
+
+
+    Jane          Steak
+    Niko           Lamb
+    Aaron         Mango
+    Penelope      Apple
+    Dean         Cheese
+    Christina     Melon
+    Cornelia      Beans
+    Name: food, dtype: object
+
+
+
+
+```python
+type(df['food'])
+```
+
+
+
+
+    pandas.core.series.Series
+
+
+
+
+```python
+s=df['food']
+```
+
+
+```python
+s.index
+```
+
+
+
+
+    Index(['Jane', 'Niko', 'Aaron', 'Penelope', 'Dean', 'Christina', 'Cornelia'], dtype='object')
+
+
+
+
+```python
+s.values
+```
+
+
+
+
+    array(['Steak', 'Lamb', 'Mango', 'Apple', 'Cheese', 'Melon', 'Beans'],
+          dtype=object)
+
+
+
+**Series 左边是Index与其对应DataFrame的index一致，右边是数据**
+
+**注意：df['food'] 返回的Series 类型 df[['food']]返回的是DataFrame类型**
+
+
+```python
+dd= df[['food']]
+```
+
+
+```python
+type(dd)
+```
+
+
+
+
+    pandas.core.frame.DataFrame
+
+
+
+### 选择多个列
+
+
+```python
+df[['food','color','score']]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>food</th>
+      <th>color</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>Steak</td>
+      <td>blue</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>Lamb</td>
+      <td>green</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>Mango</td>
+      <td>red</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>Apple</td>
+      <td>white</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>Cheese</td>
+      <td>gray</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>Melon</td>
+      <td>black</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>Beans</td>
+      <td>red</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df[['color','food','score']]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color</th>
+      <th>food</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>red</td>
+      <td>Mango</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>white</td>
+      <td>Apple</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>black</td>
+      <td>Melon</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>red</td>
+      <td>Beans</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+**关注一下返回来的列的显示顺序**
+
+## 总结 
+1. 以上是根据列名字作为key 索引，选择列
+2. df['food'] 以series 类型返回单列数据，df[['food']] 以DataFrame形式返回单列数据
+3. 多选列 df[['food','color']]
+4. 当然可以以df['Jane'] 返回行，但是尽量不这么用，因为会造成迷惑，不知道是选择的列还是行。
+## .loc 选择行，列
+
+
+```python
+row = df.loc['Jane']
+row
+```
+
+
+
+
+    state        NY
+    color      blue
+    food      Steak
+    age          30
+    height      165
+    score       4.6
+    Name: Jane, dtype: object
+
+
+
+
+```python
+type(row)
+```
+
+
+
+
+    pandas.core.series.Series
+
+
+
+**以series返回单行,其中左边index为源DataFrame列名，右边为数据**
+### 选择则多行 以DataFrame形式返回
+
+
+```python
+df.loc[['Jane','Niko']]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>NY</td>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>30</td>
+      <td>165</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+### 选择从Niko到Dean 这个范围的数据
+
+
+```python
+df.loc['Niko':'Dean']
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>NY</td>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>30</td>
+      <td>165</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>black</td>
+      <td>Melon</td>
+      <td>33</td>
+      <td>172</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>TX</td>
+      <td>red</td>
+      <td>Beans</td>
+      <td>69</td>
+      <td>150</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df.loc['Jane':'Cornelia':2]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>NY</td>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>30</td>
+      <td>165</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>TX</td>
+      <td>red</td>
+      <td>Beans</td>
+      <td>69</td>
+      <td>150</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+**上一例是带步长的切片选择**
+**注意这个切片闭区间，包括最后Cornelia**
+对比python切片,python 中切片是[),前闭后开区间
+
+
+```python
+em=[1,2,3,4]
+em[0:3]
+```
+
+
+
+
+    [1, 2, 3]
+
+
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
