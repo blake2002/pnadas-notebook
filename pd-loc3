@@ -1,0 +1,1018 @@
+
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+## .iloc 选择定位数据
+
+
+```python
+df = pd.read_csv('data/sample_data.csv',index_col=0)
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>NY</td>
+      <td>blue</td>
+      <td>Steak</td>
+      <td>30</td>
+      <td>165</td>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>black</td>
+      <td>Melon</td>
+      <td>33</td>
+      <td>172</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>TX</td>
+      <td>red</td>
+      <td>Beans</td>
+      <td>69</td>
+      <td>150</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+####  **iloc基于数值索引选择数据**
+选择索引为3的一行数据,对应的是行索引名称为Penelope的哪一行，返回的是Seires
+
+
+```python
+df.iloc[3]
+```
+
+
+
+
+    state        AL
+    color     white
+    food      Apple
+    age           4
+    height       80
+    score       3.3
+    Name: Penelope, dtype: object
+
+
+
+**上边的例子是返回Series，下边的列子是返回DataFrame形式，如下**
+
+
+```python
+ df.iloc[[3]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### **选择多行**
+
+
+```python
+df.iloc[[5,3,2]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>black</td>
+      <td>Melon</td>
+      <td>33</td>
+      <td>172</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### **切片选择多行**
+
+
+```python
+df.iloc[3:5]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df.iloc[2:]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+      <td>120</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+      <td>180</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>black</td>
+      <td>Melon</td>
+      <td>33</td>
+      <td>172</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>TX</td>
+      <td>red</td>
+      <td>Beans</td>
+      <td>69</td>
+      <td>150</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df.iloc[1:4:2]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+      <td>80</td>
+      <td>3.3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+####  **选择行列**
+
++ **多行多列**
+
+
+```python
+df.iloc[[2,5],[0,3]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>TX</td>
+      <td>33</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
++ **行切片，多列**
+
+
+```python
+df.iloc[1:5,[0,3,4]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>age</th>
+      <th>height</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>2</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>FL</td>
+      <td>12</td>
+      <td>120</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>AL</td>
+      <td>4</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>AK</td>
+      <td>32</td>
+      <td>180</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
++ **行列切片选择**
+
+
+```python
+df.iloc[2:5,1:4]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Aaron</th>
+      <td>red</td>
+      <td>Mango</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>white</td>
+      <td>Apple</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>gray</td>
+      <td>Cheese</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
++ **选择单元格**
+
+
+```python
+df.iloc[2,5]
+```
+
+
+
+
+    9.0
+
+
+
++ **选择所有行，1列，以series返回**
+
+
+```python
+df.iloc[:,5]
+```
+
+
+
+
+    Jane         4.6
+    Niko         8.3
+    Aaron        9.0
+    Penelope     3.3
+    Dean         1.8
+    Christina    9.5
+    Cornelia     2.2
+    Name: score, dtype: float64
+
+
+
++ **选择所有行，1列以DataFrame返回**
+
+
+```python
+df.iloc[:,[5]]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jane</th>
+      <td>4.6</td>
+    </tr>
+    <tr>
+      <th>Niko</th>
+      <td>8.3</td>
+    </tr>
+    <tr>
+      <th>Aaron</th>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>Penelope</th>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <th>Dean</th>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <th>Christina</th>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>Cornelia</th>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
++ **选单行所有列，以series返回**
+
+
+```python
+df.iloc[1,:]
+```
+
+
+
+
+    state        TX
+    color     green
+    food       Lamb
+    age           2
+    height       70
+    score       8.3
+    Name: Niko, dtype: object
+
+
+
++ **选择单行所有列，以DataFrame返回**
+
+
+```python
+df.iloc[[1],:]
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>color</th>
+      <th>food</th>
+      <th>age</th>
+      <th>height</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Niko</th>
+      <td>TX</td>
+      <td>green</td>
+      <td>Lamb</td>
+      <td>2</td>
+      <td>70</td>
+      <td>8.3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+**说明，pandas有.ix方法，在使用python进行数据分析第一版中有介绍，但是该该方法已经过时，尽量不要再用**
+
+### Series 中通用 .iloc .loc
+
+
+```python
+s=df['food']
+```
+
+
+```python
+s
+```
+
+
+
+
+    Jane          Steak
+    Niko           Lamb
+    Aaron         Mango
+    Penelope      Apple
+    Dean         Cheese
+    Christina     Melon
+    Cornelia      Beans
+    Name: food, dtype: object
+
+
+
+
+```python
+type(s)
+```
+
+
+
+
+    pandas.core.series.Series
+
+
+
+#### loc 使用
+
+
+```python
+s.loc['Dean']
+```
+
+
+
+
+    'Cheese'
+
+
+
+
+```python
+s.iloc[3]
+```
+
+
+
+
+    'Apple'
+
+
+
+
+```python
+s.loc[:]
+```
+
+
+
+
+    Jane          Steak
+    Niko           Lamb
+    Aaron         Mango
+    Penelope      Apple
+    Dean         Cheese
+    Christina     Melon
+    Cornelia      Beans
+    Name: food, dtype: object
+
+
+
+
+```python
+s.loc['Niko':'Dean']
+```
+
+
+
+
+    Niko          Lamb
+    Aaron        Mango
+    Penelope     Apple
+    Dean        Cheese
+    Name: food, dtype: object
+
+
+
+
+```python
+s.loc['Dean':]
+```
+
+
+
+
+    Dean         Cheese
+    Christina     Melon
+    Cornelia      Beans
+    Name: food, dtype: object
+
+
+
+
+```python
+s.loc[['Niko','Dean']]
+```
+
+
+
+
+    Niko      Lamb
+    Dean    Cheese
+    Name: food, dtype: object
+
+
+
+#### iloc 使用
+
+
+```python
+s.iloc[2]
+```
+
+
+
+
+    'Mango'
+
+
+
+
+```python
+s.iloc[[2,3]]
+```
+
+
+
+
+    Aaron       Mango
+    Penelope    Apple
+    Name: food, dtype: object
+
+
+
+
+```python
+s.iloc[1:3]
+```
+
+
+
+
+    Niko      Lamb
+    Aaron    Mango
+    Name: food, dtype: object
+
+
+
+
+```python
+s.iloc[1:]
+```
+
+
+
+
+    Niko           Lamb
+    Aaron         Mango
+    Penelope      Apple
+    Dean         Cheese
+    Christina     Melon
+    Cornelia      Beans
+    Name: food, dtype: object
+
+
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
